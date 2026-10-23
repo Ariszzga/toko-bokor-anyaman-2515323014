@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengrajin;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -94,12 +95,18 @@ class PengrajinController extends Controller
     {
         $pengrajin = Pengrajin::findOrFail($id);
 
-        // Tidak perlu try/catch QueryException seperti CategoryController:
-        // tabel pengrajins belum punya tabel lain yang mereferensikannya
-        // lewat foreign key, jadi database tidak akan pernah menolak hapusnya.
-        $pengrajin->delete();
+        try {
+            $pengrajin->delete();
+        } catch (QueryException $e) {
+            if ($e->getCode() !== '23000') {
+                throw $e;
+            }
+
+            return redirect()->route('pengrajin.index')
+                ->with('error', 'Pengrajin "'.$pengrajin->name.'" tidak bisa dihapus karena masih dipakai oleh bokor.');
+        }
 
         return redirect()->route('pengrajin.index')
-            ->with('success', 'Pengrajin berhasil dihapus.');
+            ->with('error', 'Pengrajin "'.$pengrajin->name.'" berhasil dihapus.');
     }
 }

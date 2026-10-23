@@ -100,7 +100,7 @@ class CategoryController extends Controller
                 ->with('error', 'Kategori "'.$kategori->name.'" tidak bisa dihapus karena masih dipakai oleh bokor.');
         }
 
-            return redirect()->route('kategori.index')
-        ->with('error', 'Kategori "'.$kategori->name.'" berhasil dihapus.');
-        }
+        return redirect()->route('kategori.index')
+            ->with('error', 'Kategori "'.$kategori->name.'" berhasil dihapus.');
+    }
 }

@@ -11,8 +11,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/bokor', [BokorController::class, 'index']);
-Route::get('/bokor/{id}', [BokorController::class, 'show']);
+Route::resource('bokor', BokorController::class);
 
 Route::resource('kategori', CategoryController::class)->except('show');
 Route::resource('pengrajin', PengrajinController::class)->except('show');
