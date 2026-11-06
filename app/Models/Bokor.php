@@ -15,6 +15,7 @@ class Bokor extends Model
         'artisan_name',
         'material',
         'price',
+        'stock',
         'cover',
         'made_year',
     ];
